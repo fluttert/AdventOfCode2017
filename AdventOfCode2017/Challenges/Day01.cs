@@ -8,6 +8,7 @@ namespace AdventOfCode2017.Challenges
     {
         public string Part01(string input)
         {
+            // match digits next to eachother
             var digitsMatched = new List<int>();
 
             // all input is longer then 2 characters, so always wrap around
@@ -30,10 +31,11 @@ namespace AdventOfCode2017.Challenges
 
         public string Part02(string input)
         {
+            // matching digits halve a length away
+
             var digitsMatched = new List<int>();
             int halfway = input.Length / 2;
 
-            // the rest
             for (int i = 0; i < input.Length; i++)
             {
                 if (input[i] == input[(i + halfway) % input.Length])
