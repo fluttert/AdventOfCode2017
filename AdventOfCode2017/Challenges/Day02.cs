@@ -6,12 +6,18 @@ namespace AdventOfCode2017.Challenges
 {
     public class Day02 : IChallengeDay
     {
+        /// <summary>
+        /// Calculate checkum, by summing the highest-lowest integer in each row
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns>checksum</returns>
         public string Part01(string input)
         {
             string[] rows = input.Split('\n', StringSplitOptions.RemoveEmptyEntries);
             int checksum = 0;
             foreach (string row in rows)
             {
+                // example uses spaces, while real input took tabs :|
                 int[] numbers = Array.ConvertAll(row.Split(new char[] { ' ', '\t' }), int.Parse);
                 Array.Sort(numbers);
                 checksum += (numbers.Last() - numbers[0]);
@@ -20,9 +26,34 @@ namespace AdventOfCode2017.Challenges
             return checksum.ToString();
         }
 
+        /// <summary>
+        /// Checksum based on divisible pair
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         public string Part02(string input)
         {
-            throw new NotImplementedException();
+            string[] rows = input.Split('\n', StringSplitOptions.RemoveEmptyEntries);
+            int checksum = 0;
+            foreach (string row in rows)
+            {
+                int[] numbers = Array.ConvertAll(row.Split(new char[] { ' ', '\t' }), int.Parse);
+                Array.Sort(numbers);
+                int rowSize = numbers.Length;
+                bool divisibleNumberFound = false;
+                for (int i = 0; i < rowSize - 1; i++) {
+                    for (int j = i+1; j < rowSize; j++) {
+                        if (numbers[j] % numbers[i] == 0) {
+                            checksum += (numbers[j] / numbers[i]);
+                            divisibleNumberFound = true;
+                            break;
+                        }
+                    }
+                    if (divisibleNumberFound) { break; }
+                }
+            }
+
+            return checksum.ToString();
         }
 
         public string inputDay02 = @"790	99	345	1080	32	143	1085	984	553	98	123	97	197	886	125	947
