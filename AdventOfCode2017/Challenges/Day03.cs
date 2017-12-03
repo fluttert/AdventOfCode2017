@@ -15,31 +15,31 @@ namespace AdventOfCode2017.Challenges
             int manhattanDistance = 0;
             if (candidate == 1) { return manhattanDistance.ToString(); }
 
-            // determine ring
-            int steps = 0;
-            int ring = 1;
-            while ((ring * ring) < candidate)
+            // determine side, as each side*side is 1*1, 3*3, 5*5, 7*7, etc
+            int stepsFromCenter = 0;
+            int side = 1;
+            while ((side * side) < candidate)
             {
-                steps++;
-                ring += 2;
+                stepsFromCenter++;
+                side += 2;
             }
 
-            // shortest way in cross-form
+            // shortest way in cross-form, seen from the center.
             int[] minimumsteps = new int[] {
-                (ring * ring) - 1* steps,
-                (ring * ring) - 3* steps,
-                (ring * ring) - 5 *steps,
-                (ring * ring) - 7* steps
+                (side * side) - 1* stepsFromCenter,
+                (side * side) - 3* stepsFromCenter,
+                (side * side) - 5 *stepsFromCenter,
+                (side * side) - 7* stepsFromCenter
             };
 
-            // calculate the steps from the cross-form
-            for (int i = 0; i <= steps; i++)
+            // Go from the stepsFromCenter(closest) towards the diagonals (furthers away)
+            for (int i = 0; i <= stepsFromCenter; i++)
             {
                 foreach (int minstep in minimumsteps)
                 {
                     if (minstep + i == candidate || minstep - i == candidate)
                     {
-                        manhattanDistance = steps + i;
+                        manhattanDistance = stepsFromCenter + i;
                         break;
                     }
                 }
@@ -48,24 +48,30 @@ namespace AdventOfCode2017.Challenges
             return manhattanDistance.ToString();
         }
 
+        /// <summary>
+        /// Find when there is a number bigger then the input in a custom spiral
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         public string Part02(string input)
         {
+            // init
             int result = 0;
             int dimension = 501;
             int offset = (dimension / 2) + 1;
             int candidate = int.Parse(input);
 
-            // create a grid, the last one had a minimum steps of 303, and this thing should grow very fast
+            // create a grid, the last one had a minimum stepsFromCenter of 303, and this thing should grow very fast
             // estimated guess is that the required spiral will not be bigger then 501*501
             int[][] grid = new int[dimension][];
             for (int i = 0; i < dimension; i++) { grid[i] = new int[dimension]; }
             grid[offset][offset] = 1;
 
+            // some code to get the sprial in the right direction
             int curX = offset, curY = offset;
             Direction heading = Direction.EAST;
             while (result == 0)
             {
-                // some code to get the sprial in the right direction
                 Direction nextHeading = heading;
                 if (heading == Direction.EAST)
                 {
@@ -89,7 +95,7 @@ namespace AdventOfCode2017.Challenges
                 }
 
                 // captain, should be change course?
-                heading = nextHeading; 
+                heading = nextHeading;
 
                 // get me the sum of adjecent squares
                 int sum = 0;
