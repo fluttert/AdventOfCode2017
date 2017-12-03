@@ -9,8 +9,8 @@ namespace AdventOfCode2017
         {
             var day = new Day03();
 
-            Console.WriteLine(day.Part01(day.input));
-            //Console.WriteLine(day.Part02(day.inputDay02));
+            //Console.WriteLine(day.Part01(day.input));
+            Console.WriteLine(day.Part02(day.input));
         }
     }
 }
