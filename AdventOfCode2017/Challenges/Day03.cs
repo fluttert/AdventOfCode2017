@@ -89,7 +89,7 @@ namespace AdventOfCode2017.Challenges
                 }
 
                 // captain, should be change course?
-                if (heading != nextHeading) { heading = nextHeading; }
+                heading = nextHeading; 
 
                 // get me the sum of adjecent squares
                 int sum = 0;
@@ -100,6 +100,8 @@ namespace AdventOfCode2017.Challenges
                         sum += grid[curX + i][curY + j];
                     }
                 }
+
+                // solution check
                 grid[curX][curY] = sum;
                 if (sum > candidate)
                 {
