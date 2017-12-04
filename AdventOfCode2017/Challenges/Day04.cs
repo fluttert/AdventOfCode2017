@@ -1,34 +1,46 @@
-﻿using System;
+﻿using AdventOfCode2017.Interfaces;
+using System;
 using System.Collections.Generic;
-using System.Text;
-using AdventOfCode2017.Interfaces;
 
 namespace AdventOfCode2017.Challenges
 {
     public class Day04 : IChallengeDay
     {
+        /// <summary>
+        /// How many passphrases have non-repeating words
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         public string Part01(string input)
         {
-            string[] passphrases = input.Split(new char[] {'\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+            string[] passphrases = input.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
             int validPassphrases = 0;
 
-            foreach (string passphrase in passphrases) {
-                var words = passphrase.Split(new char[] { '\t', ' ' }, StringSplitOptions.RemoveEmptyEntries );
-                var unique = new HashSet<string>();
-                bool goodPhrase = true;
-                foreach (string word in words) {
-                    if (unique.Contains(word)) {
-                        goodPhrase = false;
+            foreach (string passphrase in passphrases)
+            {
+                var words = passphrase.Split(new char[] { '\t', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                var uniqueWords = new HashSet<string>();
+                bool goodPassphrase = true;
+                foreach (string word in words)
+                {
+                    if (uniqueWords.Contains(word))
+                    {
+                        // word did repeat
+                        goodPassphrase = false;
                         break;
                     }
-                    unique.Add(word);
+                    uniqueWords.Add(word);
                 }
-                if (goodPhrase) { validPassphrases++; }
+                if (goodPassphrase) { validPassphrases++; }
             }
-
             return validPassphrases.ToString();
         }
 
+        /// <summary>
+        /// How many passphrases have non-repeating letter-combinations?
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         public string Part02(string input)
         {
             string[] passphrases = input.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
@@ -37,22 +49,23 @@ namespace AdventOfCode2017.Challenges
             foreach (string passphrase in passphrases)
             {
                 var words = passphrase.Split(new char[] { '\t', ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                var unique = new HashSet<string>();
-                bool goodPhrase = true;
+                var uniqueLetterCombos = new HashSet<string>();
+                bool goodPassphrase = true;
                 foreach (string word in words)
                 {
+                    // sort the letters, so any anagram is detect (or shuffle is undone)
                     char[] letters = word.ToCharArray();
                     Array.Sort(letters);
-                    string sortedWord = new String(letters);
+                    string sortedLetters = new String(letters);
 
-                    if (unique.Contains(sortedWord))
+                    if (uniqueLetterCombos.Contains(sortedLetters))
                     {
-                        goodPhrase = false;
+                        goodPassphrase = false;
                         break;
                     }
-                    unique.Add(sortedWord);
+                    uniqueLetterCombos.Add(sortedLetters);
                 }
-                if (goodPhrase) { validPassphrases++; }
+                if (goodPassphrase) { validPassphrases++; }
             }
 
             return validPassphrases.ToString();
