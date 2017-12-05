@@ -72,6 +72,11 @@ namespace AdventOfCode2017.Challenges
             return validPassphrases.ToString();
         }
 
+        /// <summary>
+        /// Part 2 but now parallelized
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         public string Part02Parallel(string input) {
             string[] passphrases = input.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
 
@@ -98,7 +103,7 @@ namespace AdventOfCode2017.Challenges
                     uniqueLetterCombos.Add(sortedLetters);
                 }
                 if (goodPassphrase) {
-                    lock (this)
+                    lock (locker)
                     {
                         validPassphrases++;
                     }
