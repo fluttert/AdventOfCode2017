@@ -5,6 +5,11 @@ namespace AdventOfCode2017.Challenges
 {
     public class Day05 : IChallengeDay
     {
+        /// <summary>
+        /// Jumping through an array, and determine when you are outside the boundary
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         public string Part01(string input)
         {
             var instructions = Array.ConvertAll(input.Split(new char[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries), int.Parse);
@@ -19,6 +24,11 @@ namespace AdventOfCode2017.Challenges
             return steps.ToString();
         }
 
+        /// <summary>
+        /// Jumping through an array, and determine when you are outside the boundary
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         public string Part02(string input)
         {
             var instructions = Array.ConvertAll(input.Split(new char[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries), int.Parse);
