@@ -37,8 +37,7 @@ namespace AdventOfCode2017.Challenges
             {
                 int lastPosition = position;
                 position = lastPosition + instructions[lastPosition];
-                if (instructions[lastPosition] >= 3) { instructions[lastPosition]--; }
-                else { instructions[lastPosition]++; }
+                instructions[lastPosition] += instructions[lastPosition] < 3 ? 1 : -1;
                 steps++;
             }
             return steps.ToString();
