@@ -1,6 +1,7 @@
 ﻿using AdventOfCode2017.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace AdventOfCode2017.Challenges
 {
@@ -67,6 +68,42 @@ namespace AdventOfCode2017.Challenges
                 }
                 if (goodPassphrase) { validPassphrases++; }
             }
+
+            return validPassphrases.ToString();
+        }
+
+        public string Part02Parallel(string input) {
+            string[] passphrases = input.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+
+            int validPassphrases = 0;
+            object locker = new object();
+
+            Parallel.ForEach(passphrases, passphrase =>
+            {
+                var words = passphrase.Split(new char[] { '\t', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                var uniqueLetterCombos = new HashSet<string>();
+                bool goodPassphrase = true;
+                foreach (string word in words)
+                {
+                    // sort the letters, so any anagram is detect (or shuffle is undone)
+                    char[] letters = word.ToCharArray();
+                    Array.Sort(letters);
+                    string sortedLetters = new String(letters);
+
+                    if (uniqueLetterCombos.Contains(sortedLetters))
+                    {
+                        goodPassphrase = false;
+                        break;
+                    }
+                    uniqueLetterCombos.Add(sortedLetters);
+                }
+                if (goodPassphrase) {
+                    lock (this)
+                    {
+                        validPassphrases++;
+                    }
+                }
+            });
 
             return validPassphrases.ToString();
         }
