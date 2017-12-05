@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using AdventOfCode2017.Interfaces;
+﻿using AdventOfCode2017.Interfaces;
+using System;
+
 namespace AdventOfCode2017.Challenges
 {
     public class Day05 : IChallengeDay
@@ -10,7 +9,8 @@ namespace AdventOfCode2017.Challenges
         {
             var instructions = Array.ConvertAll(input.Split(new char[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries), int.Parse);
             int position = 0, steps = 0;
-            while (position < instructions.Length) {
+            while (position < instructions.Length)
+            {
                 int lastPosition = position;
                 position = lastPosition + instructions[lastPosition];
                 instructions[lastPosition]++;
@@ -21,7 +21,17 @@ namespace AdventOfCode2017.Challenges
 
         public string Part02(string input)
         {
-            throw new NotImplementedException();
+            var instructions = Array.ConvertAll(input.Split(new char[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries), int.Parse);
+            int position = 0, steps = 0;
+            while (position < instructions.Length)
+            {
+                int lastPosition = position;
+                position = lastPosition + instructions[lastPosition];
+                if (instructions[lastPosition] >= 3) { instructions[lastPosition]--; }
+                else { instructions[lastPosition]++; }
+                steps++;
+            }
+            return steps.ToString();
         }
 
         public string input = @"2

@@ -17,5 +17,16 @@ namespace AdventOfCode2017Tests
 1
 -3").Should().Be("5");
         }
+
+        [TestMethod]
+        public void Day05Part02()
+        {
+            var day = new Day05();
+            day.Part02(@"0
+3
+0
+1
+-3").Should().Be("10");
+        }
     }
 }
