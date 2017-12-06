@@ -1,7 +1,6 @@
 ﻿using AdventOfCode2017.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace AdventOfCode2017.Challenges
 {
@@ -14,14 +13,17 @@ namespace AdventOfCode2017.Challenges
             var states = new HashSet<string>();
             int cycles = 0, memoryLength = memoryBanks.Length;
             string state = String.Join("", memoryBanks);
-            while (!states.Contains(state)){
+            while (!states.Contains(state))
+            {
                 states.Add(state);
                 cycles++;
 
                 // determine max
-                int highNumber=-1, highPos=-1;
-                for (int i = 0; i < memoryBanks.Length; i++) {
-                    if (memoryBanks[i] > highNumber) {
+                int highNumber = -1, highPos = -1;
+                for (int i = 0; i < memoryBanks.Length; i++)
+                {
+                    if (memoryBanks[i] > highNumber)
+                    {
                         highNumber = memoryBanks[i];
                         highPos = i;
                     }
@@ -29,17 +31,15 @@ namespace AdventOfCode2017.Challenges
 
                 // clear and redistribute
                 memoryBanks[highPos] = 0;
-                for (int i = (highPos + 1)% memoryLength; highNumber > 0; i = (i + 1) % memoryLength){
+                for (int i = (highPos + 1) % memoryLength; highNumber > 0; i = (i + 1) % memoryLength)
+                {
                     memoryBanks[i]++;
                     highNumber--;
                 }
 
                 // create new state
-                state = String.Join("", memoryBanks); 
+                state = String.Join("", memoryBanks);
             }
-            
-
-
 
             return cycles.ToString();
         }
