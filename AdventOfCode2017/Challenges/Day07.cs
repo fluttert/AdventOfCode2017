@@ -11,7 +11,7 @@ namespace AdventOfCode2017.Challenges
         {
             string[] nodeDescriptions = input.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
 
-            // node -> parent
+            // make a list of childNodes, and a list of nodeNames
             var childNodes = new HashSet<string>();
             var nodeNames = new List<string>();
 
@@ -21,8 +21,9 @@ namespace AdventOfCode2017.Challenges
                 var parts = nodeDescription.Split(" -> ");
                 var nodeName = parts[0].Split(' ')[0];
                 nodeNames.Add(nodeName);
-
                 if (parts.Length == 1) { continue; }
+
+                // child nodes
                 var children = parts[1].Split(new char[] { ' ', ',' }, StringSplitOptions.RemoveEmptyEntries);
                 foreach (string child in children)
                 {
@@ -30,13 +31,108 @@ namespace AdventOfCode2017.Challenges
                 }
             }
 
-            // get the node without a parent
+            // get the node which is not a child
             return nodeNames.First(e => !childNodes.Contains(e));
         }
 
         public string Part02(string input)
         {
-            throw new NotImplementedException();
+            string[] nodeDescriptions = input.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
+
+            // Node names and weights
+            var nodes = new Dictionary<string,int>();
+            var nodesTotalWeight = new Dictionary<string, int>();
+            var childNodes = new Dictionary<string, List<string>>(); // node, children
+            var parentNodes = new Dictionary<string, string>(); // node, parent
+            string randomLeaf = "";
+
+            // process input
+            foreach (var nodeDescription in nodeDescriptions)
+            {
+                string[] parts = nodeDescription.Split(" -> ");
+                string[] nodeInfo = parts[0].Split(new char[] { ' ', '(', ')'}, StringSplitOptions.RemoveEmptyEntries);
+                string nodeName = nodeInfo[0];
+                int nodeWeight = int.Parse(nodeInfo[1]);
+                nodes.Add(nodeName, nodeWeight);
+                nodesTotalWeight.Add(nodeName, nodeWeight);
+
+                if (parts.Length == 1) { randomLeaf = nodeName;  continue; }
+
+                // child nodes
+                var children = parts[1].Split(new char[] { ' ', ',' }, StringSplitOptions.RemoveEmptyEntries);
+                if (!childNodes.ContainsKey(nodeName)) {
+                    childNodes.Add(nodeName, new List<string>());
+                }
+                foreach (string child in children)
+                {
+                    childNodes[nodeName].Add(child);
+                    parentNodes.Add(child, nodeName);
+                }
+            }
+
+            // generate ALL weight in tree
+            foreach (var node in nodes) {
+                int addedWeight = node.Value;
+                string nodeName = node.Key;
+
+                // bubble up in the tree (so we can process this out of order)
+                while (parentNodes.ContainsKey(nodeName)) {
+                    nodeName = parentNodes[nodeName];
+                    nodesTotalWeight[nodeName] += addedWeight;
+                }
+                
+            }
+
+            // result
+            int neededWeight = -1;
+            var suspectedNodes = new List<string>();
+            foreach (var nodeInfo in childNodes) {
+                
+                //if (nodeInfo.Value.Count < 3) { Console.WriteLine($"{nodeInfo.Key} has only {nodeInfo.Value.Count} children"); }
+
+                var nodeName = nodeInfo.Key;
+                var nodeChildren = nodeInfo.Value;
+                if (!parentNodes.Keys.Contains(nodeName)) { continue; } // root
+                var parentNode = parentNodes[nodeName];
+                var siblings = childNodes[parentNode];
+
+                int weight = nodesTotalWeight[nodeChildren[0]];
+                bool inbalance = false;
+                for (int i = 1; i < nodeChildren.Count; i++) {
+                    if (nodesTotalWeight[nodeChildren[i]] != weight) {
+                        Console.WriteLine("OMG INBALANCE");
+                        inbalance = true;
+                        break;
+                    }
+                }
+                if (inbalance) {
+                    Console.WriteLine($"Current node: {nodeName}, with weight: {nodes[nodeName]} and totalweight:{nodesTotalWeight[nodeName]}");
+                    string childweights = "";
+                    foreach (var child in nodeChildren) {
+                        childweights += $"{child}({nodes[child]},  {nodesTotalWeight[child]})";
+                    }
+                    Console.WriteLine($"Children weights: {childweights}");
+                }
+               
+
+
+
+            }
+
+
+
+
+            // get the node which is not a child
+            //return 
+            return neededWeight.ToString();
+        }
+
+        public string GetRoot(Dictionary<string, string> parentNodes) {
+            var rootNode = parentNodes.First().Key;
+            while (!parentNodes.ContainsKey(rootNode)){
+                rootNode = parentNodes[rootNode];
+            }
+            return rootNode;
         }
 
         public string input = @"jovejmr (40)
