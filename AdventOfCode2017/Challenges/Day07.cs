@@ -44,7 +44,6 @@ namespace AdventOfCode2017.Challenges
             var nodesTotalWeight = new Dictionary<string, int>();
             var childNodes = new Dictionary<string, List<string>>(); // node, children
             var parentNodes = new Dictionary<string, string>(); // node, parent
-            string randomLeaf = "";
 
             // process input
             foreach (var nodeDescription in nodeDescriptions)
@@ -56,7 +55,7 @@ namespace AdventOfCode2017.Challenges
                 nodes.Add(nodeName, nodeWeight);
                 nodesTotalWeight.Add(nodeName, nodeWeight);
 
-                if (parts.Length == 1) { randomLeaf = nodeName;  continue; }
+                if (parts.Length == 1) { continue; }
 
                 // child nodes
                 var children = parts[1].Split(new char[] { ' ', ',' }, StringSplitOptions.RemoveEmptyEntries);
@@ -113,7 +112,7 @@ namespace AdventOfCode2017.Challenges
                     }
                     Console.WriteLine($"Children weights: {childweights}");
                 }
-               
+               // answer was 802
 
 
 
