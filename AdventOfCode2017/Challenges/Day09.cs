@@ -29,7 +29,20 @@ namespace AdventOfCode2017.Challenges
 
         public string Part02(string input)
         {
-            throw new NotImplementedException();
+            int garbageScore = 0;
+            bool garbage = false;
+            bool ignoreNextChar = false;
+            foreach (char c in input)
+            {
+                if (!garbage && c == '<') { garbage = true; continue; }
+                if (!garbage) { continue; }
+                if (ignoreNextChar) { ignoreNextChar = false; continue; }
+                if (c == '!') { ignoreNextChar = true; continue; }
+                if (garbage && c == '>') { garbage = false; continue; }
+                garbageScore++;
+
+            }
+            return garbageScore.ToString();
         }
 
         // escaped the " with "", so the Verbatim literal would not break (so slightly modified input)

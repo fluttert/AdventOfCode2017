@@ -22,5 +22,17 @@ namespace AdventOfCode2017Tests
             day.Part01("{{<!!>},{<!!>},{<!!>},{<!!>}}").Should().Be("9");
             day.Part01("{{<a!>},{<a!>},{<a!>},{<ab>}}").Should().Be("3");
         }
+
+        [TestMethod]
+        public void Day09Part02() {
+            var day = new Day09();
+            day.Part02("<>").Should().Be("0");
+            day.Part02("<random characters>").Should().Be("17");
+            day.Part02("<<<<>").Should().Be("3");
+            day.Part02("<{!>}>").Should().Be("2");
+            day.Part02("<!!>").Should().Be("0");
+            day.Part02("<!!!>>").Should().Be("0");
+            day.Part02("<{oi!a,<{i<a>").Should().Be("9");
+        }
     }
 }
