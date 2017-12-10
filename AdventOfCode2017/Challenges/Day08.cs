@@ -87,8 +87,6 @@ namespace AdventOfCode2017.Challenges
                 string op2 = parts[5];
                 int num2 = int.Parse(parts[6]);
 
-                
-
                 // check if registers exist, if not added
                 if (!registers.ContainsKey(reg1)) { registers.Add(reg1, 0); }
                 if (!registers.ContainsKey(reg2)) { registers.Add(reg2, 0); }
