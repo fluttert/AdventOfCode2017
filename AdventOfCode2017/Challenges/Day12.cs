@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace AdventOfCode2017.Challenges
 {
@@ -12,11 +11,14 @@ namespace AdventOfCode2017.Challenges
         {
             var pipes = input.Split(Environment.NewLine);
             var adjacencyList = new Dictionary<int, List<int>>();
-            // convert input to adjacenylists
-            foreach (string pipe in pipes) {
+
+            // convert input to adjacenylists (standard graph theory)
+            foreach (string pipe in pipes)
+            {
                 var nodes = Array.ConvertAll(pipe.Split(new char[] { ' ', ',', '<', '>', '-' }, StringSplitOptions.RemoveEmptyEntries), int.Parse);
                 adjacencyList[nodes[0]] = new List<int>();
-                for (int i = 1; i < nodes.Length; i++) {
+                for (int i = 1; i < nodes.Length; i++)
+                {
                     adjacencyList[nodes[0]].Add(nodes[i]);
                 }
             }
@@ -25,23 +27,28 @@ namespace AdventOfCode2017.Challenges
             var markedNodes = new bool[pipes.Length + 1];
             var queue = new Queue<int>();
             queue.Enqueue(0);
-            while (queue.Count > 0) {
+
+            // breadth depth first
+            while (queue.Count > 0)
+            {
                 int candidate = queue.Dequeue();
                 if (markedNodes[candidate]) { continue; }
                 markedNodes[candidate] = true;
-                foreach (int newCandidates in adjacencyList[candidate]) {
+                foreach (int newCandidates in adjacencyList[candidate])
+                {
                     if (markedNodes[newCandidates]) { continue; }
                     queue.Enqueue(newCandidates);
                 }
             }
 
-            return markedNodes.Count(e => e).ToString() ;
+            return markedNodes.Count(e => e).ToString();
         }
 
         public string Part02(string input)
         {
             var pipes = input.Split(Environment.NewLine);
             var adjacencyList = new Dictionary<int, List<int>>();
+            
             // convert input to adjacenylists
             foreach (string pipe in pipes)
             {
@@ -61,8 +68,10 @@ namespace AdventOfCode2017.Challenges
                 var queue = new Queue<int>();
 
                 // choose the first unmarked node
-                for (int i = 0; i < markedNodes.Length; i++) {
-                    if (!markedNodes[i]) {
+                for (int i = 0; i < markedNodes.Length; i++)
+                {
+                    if (!markedNodes[i])
+                    {
                         queue.Enqueue(i);
                         break;
                     }
@@ -82,7 +91,7 @@ namespace AdventOfCode2017.Challenges
                 }
 
                 // forest increased by 1
-                groups++; 
+                groups++;
             }
 
             return groups.ToString();

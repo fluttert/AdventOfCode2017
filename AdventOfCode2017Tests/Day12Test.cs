@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using AdventOfCode2017.Challenges;
+﻿using AdventOfCode2017.Challenges;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -11,7 +8,8 @@ namespace AdventOfCode2017Tests
     public class Day12Test
     {
         [TestMethod]
-        public void Day12Part01() {
+        public void Day12Part01()
+        {
             var day = new Day12();
             var input = @"0 <-> 2
 1 <-> 1
