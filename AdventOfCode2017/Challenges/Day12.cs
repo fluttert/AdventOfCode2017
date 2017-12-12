@@ -40,7 +40,52 @@ namespace AdventOfCode2017.Challenges
 
         public string Part02(string input)
         {
-            throw new NotImplementedException();
+            var pipes = input.Split(Environment.NewLine);
+            var adjacencyList = new Dictionary<int, List<int>>();
+            // convert input to adjacenylists
+            foreach (string pipe in pipes)
+            {
+                var nodes = Array.ConvertAll(pipe.Split(new char[] { ' ', ',', '<', '>', '-' }, StringSplitOptions.RemoveEmptyEntries), int.Parse);
+                adjacencyList[nodes[0]] = new List<int>();
+                for (int i = 1; i < nodes.Length; i++)
+                {
+                    adjacencyList[nodes[0]].Add(nodes[i]);
+                }
+            }
+
+            // do multiple searched untill ALL nodes are marked done
+            var markedNodes = new bool[pipes.Length];
+            int groups = 0;
+            while (markedNodes.Any(e => !e))
+            {
+                var queue = new Queue<int>();
+
+                // choose the first unmarked node
+                for (int i = 0; i < markedNodes.Length; i++) {
+                    if (!markedNodes[i]) {
+                        queue.Enqueue(i);
+                        break;
+                    }
+                }
+
+                // breadth first search
+                while (queue.Count > 0)
+                {
+                    int candidate = queue.Dequeue();
+                    if (markedNodes[candidate]) { continue; }
+                    markedNodes[candidate] = true;
+                    foreach (int newCandidates in adjacencyList[candidate])
+                    {
+                        if (markedNodes[newCandidates]) { continue; }
+                        queue.Enqueue(newCandidates);
+                    }
+                }
+
+                // forest increased by 1
+                groups++; 
+            }
+
+            return groups.ToString();
         }
 
         public string input = @"0 <-> 396, 1867
