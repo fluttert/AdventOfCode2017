@@ -36,7 +36,6 @@ namespace AdventOfCode2017.Challenges
                 markedNodes[candidate] = true;
                 foreach (int newCandidates in adjacencyList[candidate])
                 {
-                    if (markedNodes[newCandidates]) { continue; }
                     queue.Enqueue(newCandidates);
                 }
             }
@@ -85,7 +84,6 @@ namespace AdventOfCode2017.Challenges
                     markedNodes[candidate] = true;
                     foreach (int newCandidates in adjacencyList[candidate])
                     {
-                        if (markedNodes[newCandidates]) { continue; }
                         queue.Enqueue(newCandidates);
                     }
                 }
