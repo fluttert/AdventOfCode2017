@@ -28,7 +28,31 @@ namespace AdventOfCode2017.Challenges
 
         public string Part02(string input)
         {
-            throw new NotImplementedException();
+            Dictionary<int, int> firewall =
+                input.Split(Environment.NewLine)
+                .Select(x => Array.ConvertAll(x.Split(new char[] { ' ', ':' }, StringSplitOptions.RemoveEmptyEntries), int.Parse))
+                .ToDictionary(x => x[0], x => x[1]);
+
+
+            int delay = 0;
+            int firewallLength = firewall.Keys.Max();
+            bool caught = true;
+            while (caught)
+            {
+                bool caughtWithThisDelay = false;
+                for (int picosecond = 0; picosecond <= firewallLength; picosecond++)
+                {
+                    if (!firewall.ContainsKey(picosecond)) { continue; }
+                    int scannerPosition = (picosecond+delay) % (2 * firewall[picosecond] - 2);
+                    if (scannerPosition == 0) { caughtWithThisDelay = true; break; }
+                }
+
+                if (!caughtWithThisDelay) { break; }
+
+                delay++;
+                            }
+
+            return delay.ToString();
         }
 
         public string input = @"0: 3
