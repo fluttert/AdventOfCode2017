@@ -1,14 +1,29 @@
 ﻿using AdventOfCode2017.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+
 namespace AdventOfCode2017.Challenges
 {
     public class Day13 : IChallengeDay
     {
         public string Part01(string input)
         {
-            throw new NotImplementedException();
+            Dictionary<int, int> firewall =
+                input.Split(Environment.NewLine)
+                .Select(x => Array.ConvertAll(x.Split(new char[] { ' ', ':' }, StringSplitOptions.RemoveEmptyEntries), int.Parse))
+                .ToDictionary(x => x[0], x => x[1]);
+
+            int result = 0;
+            int firewallEnd = firewall.Keys.Max();
+            for (int picosecond = 0; picosecond <= firewallEnd; picosecond++)
+            {
+                if (!firewall.ContainsKey(picosecond)) { continue; }
+                int scannerPosition = picosecond % (2 * firewall[picosecond] - 2);
+                result += scannerPosition == 0 ? picosecond * firewall[picosecond] : 0;
+            }
+
+            return result.ToString();
         }
 
         public string Part02(string input)
