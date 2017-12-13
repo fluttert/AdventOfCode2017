@@ -1,9 +1,6 @@
 ﻿using AdventOfCode2017.Challenges;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace AdventOfCode2017Tests
 {
@@ -11,7 +8,8 @@ namespace AdventOfCode2017Tests
     public class Day13Test
     {
         [TestMethod]
-        public void Day13Part01() {
+        public void Day13Part01()
+        {
             var day = new Day13();
             var input = @"0: 3
 1: 2
@@ -30,7 +28,5 @@ namespace AdventOfCode2017Tests
 6: 4";
             day.Part02(input).Should().Be("10");
         }
-
-
     }
 }

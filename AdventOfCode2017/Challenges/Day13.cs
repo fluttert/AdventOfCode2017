@@ -33,7 +33,6 @@ namespace AdventOfCode2017.Challenges
                 .Select(x => Array.ConvertAll(x.Split(new char[] { ' ', ':' }, StringSplitOptions.RemoveEmptyEntries), int.Parse))
                 .ToDictionary(x => x[0], x => x[1]);
 
-
             int delay = 0;
             int firewallLength = firewall.Keys.Max();
             bool caught = true;
@@ -43,14 +42,14 @@ namespace AdventOfCode2017.Challenges
                 for (int picosecond = 0; picosecond <= firewallLength; picosecond++)
                 {
                     if (!firewall.ContainsKey(picosecond)) { continue; }
-                    int scannerPosition = (picosecond+delay) % (2 * firewall[picosecond] - 2);
+                    int scannerPosition = (picosecond + delay) % (2 * firewall[picosecond] - 2);
                     if (scannerPosition == 0) { caughtWithThisDelay = true; break; }
                 }
 
                 if (!caughtWithThisDelay) { break; }
 
                 delay++;
-                            }
+            }
 
             return delay.ToString();
         }
