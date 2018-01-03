@@ -21,7 +21,44 @@ namespace AdventOfCode2017.Challenges
 
         public string Part02(string input)
         {
-            throw new NotImplementedException();
+            // convert that grid to something sensible
+            List<string> tmpGrid = GenerateGrid(input);
+            char[][] grid = new char[tmpGrid.Count][];
+            for (int i = 0; i < tmpGrid.Count; i++) { grid[i] = tmpGrid[i].ToCharArray(); }
+            int regions = 0;
+            // search regions and mark em
+            for (int i = 0; i < 128; i++)
+            {
+                for (int j = 0; j < 128; j++)
+                {
+                    if (grid[i][j] == '1')
+                    {
+                        // region found!
+                        regions++;
+
+                        // mark em done
+                        var queue = new Queue<Tuple<int, int>>();
+                        queue.Enqueue(new Tuple<int, int>(i, j));
+                        while (queue.Count > 0) {
+                            var t = queue.Dequeue();
+                            int x = t.Item1, y = t.Item2;
+
+                            if (grid[x][y] == '0') { continue; }
+
+                            // mark done
+                            grid[x][y] = '0';
+
+                            // add left, right, upper, lower neighbour
+                            if (x > 0 && grid[x-1][y]=='1') { queue.Enqueue(new Tuple<int, int>(x-1, y)); }
+                            if (x <127 && grid[x + 1][y] == '1') { queue.Enqueue(new Tuple<int, int>(x + 1, y)); }
+                            if (y > 0 && grid[x][y-1] == '1') { queue.Enqueue(new Tuple<int, int>(x, y-1)); }
+                            if (y < 127 && grid[x][y+1] == '1') { queue.Enqueue(new Tuple<int, int>(x, y+1)); }
+                        }
+                    }
+                }
+            }
+
+            return regions.ToString();
         }
 
         public string input = "jxqlasbh";

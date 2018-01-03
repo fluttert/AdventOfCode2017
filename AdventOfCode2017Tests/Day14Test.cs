@@ -14,5 +14,14 @@ namespace AdventOfCode2017Tests
             var grid = day.GenerateGrid("flqrgnkx");
             day.Part01("flqrgnkx").Should().Be("8108");
         }
+
+
+        [TestMethod]
+        public void Day14Part02()
+        {
+            var day = new Day14();
+            var grid = day.GenerateGrid("flqrgnkx");
+            day.Part02("flqrgnkx").Should().Be("1242");
+        }
     }
 }
