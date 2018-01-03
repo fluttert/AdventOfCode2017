@@ -1,0 +1,108 @@
+﻿using AdventOfCode2017.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace AdventOfCode2017.Challenges
+{
+    public class Day14 : IChallengeDay
+    {
+        public string Part01(string input)
+        {
+            List<string> grid = GenerateGrid(input);
+            int used = 0;
+            foreach (string row in grid)
+            {
+                used += row.Count(a => a == '1');
+            }
+            return used.ToString();
+        }
+
+        public string Part02(string input)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string input = "jxqlasbh";
+
+        public List<string> GenerateGrid(string input, int rows = 128)
+        {
+            var grid = new List<string>();
+            for (int i = 0; i < rows; i++)
+            {
+                string token = $"{input}-{i}";
+                string hash = KnotHash(token);
+                StringBuilder sb = new StringBuilder();
+                foreach (char c in hash)
+                {
+                    int val = 0;
+                    if (c >= '0' && c <= '9')
+                    {
+                        val = c - '0';
+                    }
+                    if (c >= 'a' && c <= 'f')
+                    {
+                        val = 10 + (c - 'a');
+                    }
+
+                    sb.Append(Convert.ToString(val, 2).PadLeft(4, '0'));
+                }
+                grid.Add(sb.ToString());
+            }
+            return grid;
+        }
+
+        public string KnotHash(string input)
+        {
+            // populate list
+            var ListLength = 256;
+            var list = new int[ListLength];
+            for (int i = 0; i < ListLength; i++) { list[i] = i; }
+
+            int currentPosition = 0;
+            int skipSize = 0;
+
+            List<int> sequences = input.Select(e => (int)e).ToList();
+            sequences.Add(17); sequences.Add(31); sequences.Add(73); sequences.Add(47); sequences.Add(23);
+
+            for (int rounds = 0; rounds < 64; rounds++)
+            {
+                foreach (int seq in sequences)
+                {
+                    int halfSeq = seq / 2; // 6/2=3, 5/2=2
+                    int seqenceEndIdex = currentPosition + seq - 1;
+                    for (int i = 0; i < halfSeq; i++)
+                    {
+                        int startIndex = (currentPosition + i) % ListLength;
+                        int endIndex = (seqenceEndIdex - i) % ListLength;
+
+                        // swap / reverse
+                        int swap = list[startIndex];
+                        list[startIndex] = list[endIndex];
+                        list[endIndex] = swap;
+                    }
+                    // move to next position
+                    currentPosition = (currentPosition + seq + skipSize) % ListLength;
+
+                    // increase skipsize
+                    skipSize++;
+                }
+            }
+
+            string[] output = new string[16];
+            for (int i = 0; i < 16; i++)
+            {
+                int offset = i * 16;
+                int xorValue = list[offset];
+                for (int j = 1; j < 16; j++)
+                {
+                    xorValue ^= list[(offset + j)];
+                }
+                output[i] = xorValue.ToString("X2");
+            }
+
+            return string.Join("", output).ToLower();
+        }
+    }
+}
