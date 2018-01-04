@@ -10,13 +10,13 @@ namespace AdventOfCode2017Tests
     [TestClass]
     public class Day15Test
     {
-        [TestMethod]
+        //[TestMethod] // disabled long test
         public void Day15Part01() {
             var day = new Day15();
             day.Part01("65 8921").Should().Be("588");
         }
 
-        [TestMethod]
+        //[TestMethod] // disabled long test
         public void Day15Part02()
         {
             var day = new Day15();
