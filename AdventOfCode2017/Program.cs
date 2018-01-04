@@ -9,13 +9,13 @@ namespace AdventOfCode2017
         private static void Main(string[] args)
         {
             // challenge
-            var day = new Day15();
+            var day = new Day16();
 
             // timing
             var stopwatch = new Stopwatch();
             stopwatch.Start();
 
-            //Console.WriteLine(day.Part01(day.input));
+            Console.WriteLine(day.Part01(day.input));
             Console.WriteLine(day.Part02(day.input));
 
             // timing
