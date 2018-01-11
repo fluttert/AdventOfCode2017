@@ -30,7 +30,20 @@ namespace AdventOfCode2017.Challenges
 
         public string Part02(string input)
         {
-            return null;
+            int bufferLength = 50000000;
+            int stepsForward = int.Parse(input);
+            int length = 2, position = 1, result = 1 ;
+            while (length < bufferLength)
+            {
+                position = (position + stepsForward) % length;
+                if (position == 0) { result = length; }
+                position++;
+                length++;
+            }
+
+           
+
+            return result.ToString();
         }
 
         public string input = "376";
