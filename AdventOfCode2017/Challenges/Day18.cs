@@ -8,63 +8,72 @@ namespace AdventOfCode2017.Challenges
     {
         public string Part01(string input)
         {
-            string[] instructions = input.Trim().Split('\n');
-            var registers = new Dictionary<string, int>();
-            int frequency = 0;
+            string[] instructions = input.Trim().Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+            var register = new Dictionary<char, long>();
+            long lastFrequency = 0, nextInstruction = 0;
+            bool exit = false;
 
-            int nextInstruction = 0;
-            int result = 0;
-            while (nextInstruction < instructions.Length)
+            string registerKeys = "abcdefghijklmnopqrstuvwxyz";
+            foreach (char registerKey in registerKeys) { register.Add(registerKey, 0); }
+
+            // my first local function!
+            long GetByParsingOrRegister(string part)
             {
-                int increment = 1;
+                long result = 0;
+                if (part.Length < 1) { throw new ArgumentException($"Empty argument"); }
+                if (part[0] >= 'a' && part[0] <= 'z') { result = register[part[0]]; }
+                else { result = Int64.Parse(part); }
+                return result;
+            }
 
+            while (!exit && nextInstruction < instructions.Length)
+            {
+                long increment = 1;
                 string[] parts = instructions[nextInstruction].Trim().Split(' ');
-                if (parts[1][0] >= 'a' && parts[1][0] <= 'z' && !registers.ContainsKey(parts[1])) { registers.Add(parts[1], 0); }
-                if (parts.Length > 2 && parts[2][0] >= 'a' && parts[2][0] <= 'z' && !registers.ContainsKey(parts[2])) { registers.Add(parts[2], 0); }
+
                 switch (parts[0])
                 {
                     case "snd":
-                        frequency = registers[parts[1]];
+                        lastFrequency = GetByParsingOrRegister(parts[1]);
                         break;
 
                     case "set":
-                        registers[parts[1]] = (parts[2][0] >= 'a' && parts[2][0] <= 'z' ? registers[parts[2]] : int.Parse(parts[2]));
+                        register[parts[1][0]] = GetByParsingOrRegister(parts[2]);
                         break;
 
                     case "add":
-                        registers[parts[1]] += (parts[2][0] >= 'a' && parts[2][0] <= 'z' ? registers[parts[2]] : int.Parse(parts[2])); ;
+                        register[parts[1][0]] += GetByParsingOrRegister(parts[2]);
                         break;
 
                     case "mul":
-                        registers[parts[1]] *= (parts[2][0] >= 'a' && parts[2][0] <= 'z' ? registers[parts[2]] : int.Parse(parts[2])); ;
+                        register[parts[1][0]] *= GetByParsingOrRegister(parts[2]);
                         break;
 
                     case "mod":
-                        registers[parts[1]] %= (parts[2][0] >= 'a' && parts[2][0] <= 'z' ? registers[parts[2]] : int.Parse(parts[2])); ;
+                        register[parts[1][0]] %= GetByParsingOrRegister(parts[2]);
                         break;
 
                     case "rcv":
-                        result = registers[parts[1]] == 0 ? 0 : frequency;
+                        long res = GetByParsingOrRegister(parts[1]);
+                        if (res != 0) { exit = true; }
                         break;
 
                     case "jgz":
-
-                        if (registers[parts[1]] > 0)
+                        long valX = GetByParsingOrRegister(parts[1]);
+                        if (valX > 0)
                         {
-                            int jump = (parts[2][0] >= 'a' && parts[2][0] <= 'z' ? registers[parts[2]] : int.Parse(parts[2])); ;
-                            if (jump < 0) { increment = jump; }
-                            else { increment = jump - 1; }
+                            long valY = GetByParsingOrRegister(parts[2]);
+                            increment = valY;
                         }
                         break;
 
                     default:
                         break;
                 }
-                if (result != 0) { break; }
+
                 nextInstruction += increment;
             }
-
-            return result.ToString(); ;
+            return lastFrequency.ToString(); ;
         }
 
         public string Part02(string input)
