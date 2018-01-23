@@ -78,7 +78,72 @@ namespace AdventOfCode2017.Challenges
 
         public string Part02(string input)
         {
-            throw new NotImplementedException();
+            string[] instructions = input.Trim().Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+            var register = new Dictionary<char, long>();
+            long sendValue = 0, nextInstruction = 0;
+            bool exit = false;
+
+            string registerKeys = "abcdefghijklmnopqrstuvwxyz";
+            foreach (char registerKey in registerKeys) { register.Add(registerKey, 0); }
+
+            // my first local function!
+            long GetByParsingOrRegister(string part)
+            {
+                long result = 0;
+                if (part.Length < 1) { throw new ArgumentException($"Empty argument"); }
+                if (part[0] >= 'a' && part[0] <= 'z') { result = register[part[0]]; }
+                else { result = Int64.Parse(part); }
+                return result;
+            }
+
+            while (!exit && nextInstruction < instructions.Length)
+            {
+                long increment = 1;
+                string[] parts = instructions[nextInstruction].Trim().Split(' ');
+
+                switch (parts[0])
+                {
+                    case "snd":
+                        sendValue++;
+                        break;
+
+                    case "set":
+                        register[parts[1][0]] = GetByParsingOrRegister(parts[2]);
+                        break;
+
+                    case "add":
+                        register[parts[1][0]] += GetByParsingOrRegister(parts[2]);
+                        break;
+
+                    case "mul":
+                        register[parts[1][0]] *= GetByParsingOrRegister(parts[2]);
+                        break;
+
+                    case "mod":
+                        register[parts[1][0]] %= GetByParsingOrRegister(parts[2]);
+                        break;
+
+                    case "rcv":
+                        long res = GetByParsingOrRegister(parts[1]);
+                        if (res != 0) { exit = true; }
+                        break;
+
+                    case "jgz":
+                        long valX = GetByParsingOrRegister(parts[1]);
+                        if (valX > 0)
+                        {
+                            long valY = GetByParsingOrRegister(parts[2]);
+                            increment = valY;
+                        }
+                        break;
+
+                    default:
+                        break;
+                }
+
+                nextInstruction += increment;
+            }
+            return sendValue.ToString(); ;
         }
 
         public string input = @"set i 31
