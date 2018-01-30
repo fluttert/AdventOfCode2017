@@ -147,6 +147,7 @@ jgz a -19";
             Register = new Dictionary<char, long>();
             string registerKeys = "abcdefghijklmnopqrstuvwxyz";
             foreach (char registerKey in registerKeys) { Register.Add(registerKey, 0); }
+            Register['p'] = this.id;
         }
 
         public long id { get; private set; }
