@@ -9,7 +9,7 @@ namespace AdventOfCode2017
         private static void Main(string[] args)
         {
             // challenge
-            var day = new Day18();
+            var day = new Day19();
 
             // timing
             var stopwatch = new Stopwatch();
